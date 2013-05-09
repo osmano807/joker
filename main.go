@@ -62,7 +62,8 @@ func handleInput(il *InputLine) {
 
 		ol := new(OutputLine)
 		ol.ChannelId = il.ChannelId
-		ol.result = NO_CHANGE
+		ol.result = NEW_STOREID
+		ol.store_id = "http://ObamaPreto.com/"
 
 		printOutput(ol)
 
@@ -83,7 +84,7 @@ func printOutput(ol *OutputLine) {
 	case NO_CHANGE:
 		fmt.Println("ERR") // Squid misleading return code
 	case NEW_STOREID:
-		fmt.Printf("OK store-id=%v", ol.store_id)
+		fmt.Printf("OK store-id=%v\n", ol.store_id)
 	}
 }
 
