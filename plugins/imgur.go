@@ -13,7 +13,8 @@ func Imgur(il *InputLine) (ol *OutputLine) {
 	}
 
 	ol.Result = NEW_STOREID
-	ol.StoreId = "http://" + "Joker/" + il.URL.Host + "/"
+	newpath := removeExtension(il.URL.Path)
+	ol.StoreId = "http://" + "Joker/" + il.URL.Host + newpath
 
 	return
 }
