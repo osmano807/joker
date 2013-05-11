@@ -25,8 +25,9 @@ func (p *Imgur) Handle(il *InputLine) (ol *OutputLine) {
 	}
 
 	ol.Result = NEW_STOREID
-	newpath := removeExtension(il.URL.Path)
-	ol.StoreId = "http://" + "Joker/" + il.URL.Host + newpath
+	il.URL.Path = removeExtension(il.URL.Path)
+	il.URL.Host = JOKER_PREFIX + "/" + il.URL.Host
+	ol.StoreId = il.URL.String()
 
 	return
 }

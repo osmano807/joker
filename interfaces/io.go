@@ -20,3 +20,4 @@ type OutputLine struct {
 	StoreId   string
 }
 
+const JOKER_PREFIX = "Joker.squid.internal"
