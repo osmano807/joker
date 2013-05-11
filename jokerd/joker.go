@@ -45,7 +45,7 @@ func readerLoop(input io.Reader) {
 			exitWaitGroup.Wait()
 			log.Println("Normal exit from squid")
 			return
-		} else if ln != 4 && ln != 5 {
+		} else if ln < 4 {
 			log.Println("Linha com erro:", line)
 			continue
 		}
