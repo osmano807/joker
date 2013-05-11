@@ -27,6 +27,7 @@ func (p *Imgur) Handle(il *InputLine) (ol *OutputLine) {
 	ol.Result = NEW_STOREID
 	il.URL.Path = removeExtension(il.URL.Path)
 	il.URL.Host = JOKER_PREFIX + "/" + il.URL.Host
+	il.URL.RawQuery = ""
 	ol.StoreId = il.URL.String()
 
 	return
