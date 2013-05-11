@@ -2,7 +2,19 @@ package plugins
 
 import . "github.com/osmano807/joker/interfaces"
 
-func Imgur(il *InputLine) (ol *OutputLine) {
+type Imgur struct {
+	name string
+}
+
+func (p *Imgur) Name() string {
+	return p.name
+}
+
+func (p *Imgur) Init() {
+	p.name = "Imgur"
+}
+
+func (p *Imgur) Handle(il *InputLine) (ol *OutputLine) {
 	ol = &OutputLine{}
 
 	ol.ChannelId = il.ChannelId

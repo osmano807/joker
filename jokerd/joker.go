@@ -14,7 +14,14 @@ import (
 )
 
 func Main() {
+	runPluginsInit()
 	readerLoop(os.Stdin)
+}
+
+func runPluginsInit() {
+	for _, p := range plugins.PLUGINS_LIST {
+		p.Init()
+	}
 }
 
 func readerLoop(input io.Reader) {
@@ -48,10 +55,10 @@ func handleInput(il *InputLine) {
 
 		var ol *OutputLine
 
-		for _, myfn := range plugins.PLUGINS_LIST {
-			ol = myfn(il)
+		for _, myp := range plugins.PLUGINS_LIST {
+			ol = myp.Handle(il)
 			if ol.Result != NO_CHANGE {
-				log.Println("Match found!")
+				log.Println("Match found by plugin", myp.Name())
 				break
 			}
 		}
