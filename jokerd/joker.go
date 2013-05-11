@@ -13,17 +13,21 @@ import (
 	"github.com/osmano807/joker/plugins"
 )
 
+var NewSquidFormat bool = false
+
 func Main() {
 	runPluginsInit()
 	readerLoop(os.Stdin)
 }
 
+// run some initialization code for each plugin
 func runPluginsInit() {
 	for _, p := range plugins.PLUGINS_LIST {
 		p.Init()
 	}
 }
 
+// Executes the main reading loop of squid requests
 func readerLoop(input io.Reader) {
 	rd := bufio.NewReader(input)
 	for {
@@ -63,7 +67,7 @@ func handleInput(il *InputLine) {
 			}
 		}
 
-		printOutput(ol)
+		printOutput(il, ol)
 
 		log.Println("Exiting handling...")
 	}
@@ -74,17 +78,26 @@ func handleInput(il *InputLine) {
 	}
 }
 
-func printOutput(ol *OutputLine) {
-	// Squid version 3.HEAD format
-	// TODO: support Squid 2.7 format
+func printOutput(il *InputLine, ol *OutputLine) {
 	if ol.ChannelId != NON_CONCURRENT {
 		fmt.Printf("%v ", ol.ChannelId)
 	}
-	switch ol.Result {
-	case NO_CHANGE:
-		fmt.Println("ERR") // Squid misleading return code
-	case NEW_STOREID:
-		fmt.Printf("OK store-id=%v\n", ol.StoreId)
+	if NewSquidFormat {
+
+		switch ol.Result {
+		case NO_CHANGE:
+			fmt.Println("ERR") // Squid misleading return code
+		case NEW_STOREID:
+			fmt.Printf("OK store-id=%v\n", ol.StoreId)
+		}
+	} else {
+		switch ol.Result {
+		case NO_CHANGE:
+			fmt.Println(il.URL.String())
+		case NEW_STOREID:
+			fmt.Println(ol.StoreId)
+
+		}
 	}
 }
 
