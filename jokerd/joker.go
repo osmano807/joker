@@ -3,20 +3,24 @@ package joker
 import (
 	"bufio"
 	"fmt"
+	. "github.com/osmano807/joker/interfaces"
+	"github.com/osmano807/joker/plugins"
 	"io"
 	"log"
 	"net/url"
 	"os"
 	"strconv"
 	"strings"
-	. "github.com/osmano807/joker/interfaces"
-	"github.com/osmano807/joker/plugins"
+	"sync"
 )
 
 var NewSquidFormat bool = false
+var exitWaitGroup sync.WaitGroup
+var outputStream *log.Logger // Hack because fmt is not thread safe
 
 func Main() {
 	runPluginsInit()
+	outputStream = log.New(os.Stdout, "",  0)
 	readerLoop(os.Stdin)
 }
 
@@ -32,13 +36,13 @@ func readerLoop(input io.Reader) {
 	rd := bufio.NewReader(input)
 	for {
 		line, err := rd.ReadString('\n')
-		if err != nil {
-			break
+		if err != nil && err != io.EOF { // EOF is handled on the next if
+			log.Fatalln("Erro inesperado", err)
 		}
 		fields := strings.Fields(line)
 		if ln := len(fields); ln == 0 {
-			// TODO: check if we have any goroutine running and wait
-			// to exit (or force exit?)
+			log.Println("Esperando goroutines")
+			exitWaitGroup.Wait()
 			log.Println("Normal exit from squid")
 			return
 		} else if ln != 4 && ln != 5 {
@@ -69,33 +73,41 @@ func handleInput(il *InputLine) {
 
 		printOutput(il, ol)
 
+		if il.ChannelId != NON_CONCURRENT {
+			log.Println("Done goroutine")
+			exitWaitGroup.Done()
+		}
+
 		log.Println("Exiting handling...")
 	}
 	if il.ChannelId == NON_CONCURRENT { // Sequential
 		fn()
 	} else {
+		log.Println("Starting goroutine")
+		exitWaitGroup.Add(1)
 		go fn()
 	}
 }
 
 func printOutput(il *InputLine, ol *OutputLine) {
+	var prefix string = ""
 	if ol.ChannelId != NON_CONCURRENT {
-		fmt.Printf("%v ", ol.ChannelId)
+		prefix = fmt.Sprintf("%d ", ol.ChannelId)
 	}
-	if NewSquidFormat {
 
+	if NewSquidFormat {
 		switch ol.Result {
 		case NO_CHANGE:
-			fmt.Println("ERR") // Squid misleading return code
+			outputStream.Println(prefix + "ERR") // Squid misleading return code
 		case NEW_STOREID:
-			fmt.Printf("OK store-id=%v\n", ol.StoreId)
+			outputStream.Printf(prefix + "OK store-id=%v\n", ol.StoreId)
 		}
 	} else {
 		switch ol.Result {
 		case NO_CHANGE:
-			fmt.Println(il.URL.String())
+			outputStream.Println(prefix + il.URL.String())
 		case NEW_STOREID:
-			fmt.Println(ol.StoreId)
+			outputStream.Println(prefix + ol.StoreId)
 
 		}
 	}
