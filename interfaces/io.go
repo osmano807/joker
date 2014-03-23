@@ -20,4 +20,6 @@ type OutputLine struct {
 	StoreId   string
 }
 
-const JOKER_PREFIX = "Joker.squid.internal"
+// Per http://wiki.squid-cache.org/Features/StoreID
+// the more common use id just squid.internal
+const JOKER_SUFFIX = "squid.internal"

@@ -1,6 +1,7 @@
 package plugins
 
 import . "github.com/osmano807/joker/interfaces"
+import "net/url"
 
 type Imgur struct {
 	name string
@@ -25,10 +26,13 @@ func (p *Imgur) Handle(il *InputLine) (ol *OutputLine) {
 	}
 
 	ol.Result = NEW_STOREID
-	il.URL.Path = removeExtension(il.URL.Path)
-	il.URL.Host = JOKER_PREFIX + "/" + il.URL.Host
-	il.URL.RawQuery = ""
-	ol.StoreId = il.URL.String()
+	// Copy the URL so I don't modify the original
+	var oURL url.URL
+	oURL = *il.URL
+	oURL.Path = removeExtension(oURL.Path)
+	oURL.Host = oURL.Host + "." + JOKER_SUFFIX
+	oURL.RawQuery = ""
+	ol.StoreId = oURL.String()
 
 	return
 }
