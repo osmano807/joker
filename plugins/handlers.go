@@ -7,4 +7,3 @@ type Plugin interface {
 	Init()
 	Handle(*InputLine) *OutputLine
 }
-

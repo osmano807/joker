@@ -20,7 +20,7 @@ var outputStream *log.Logger // Hack because fmt is not thread safe
 
 func Main() {
 	runPluginsInit()
-	outputStream = log.New(os.Stdout, "",  0)
+	outputStream = log.New(os.Stdout, "", 0)
 	readerLoop(os.Stdin)
 }
 
