@@ -2,7 +2,7 @@ package joker
 
 import (
 	"bufio"
-	"fmt"
+	"bytes"
 	. "github.com/osmano807/joker/interfaces"
 	"github.com/osmano807/joker/plugins"
 	"io"
@@ -90,9 +90,11 @@ func handleInput(il *InputLine) {
 }
 
 func printOutput(il *InputLine, ol *OutputLine) {
-	var prefix string = ""
+	var buffer bytes.Buffer
+
 	if ol.ChannelId != NON_CONCURRENT {
-		prefix = fmt.Sprintf("%d ", ol.ChannelId)
+		buffer.WriteString(strconv.Itoa(ol.ChannelId))
+		buffer.WriteString(" ")
 	}
 
 	if NewSquidFormat {
@@ -102,19 +104,23 @@ func printOutput(il *InputLine, ol *OutputLine) {
 
 		switch ol.Result {
 		case NO_CHANGE:
-			outputStream.Println(prefix + "ERR") // Squid misleading return code
+			buffer.WriteString("ERR") // Squid misleading return code
 		case NEW_STOREID:
-			outputStream.Printf(prefix+"OK store-id=%v\n", ol.StoreId)
+			buffer.WriteString("OK store-id=")
+			buffer.WriteString(ol.StoreId)
+
 		}
 	} else {
 		switch ol.Result {
 		case NO_CHANGE:
-			outputStream.Println(prefix + il.URL.String())
+			buffer.WriteString(il.URL.String())
 		case NEW_STOREID:
-			outputStream.Println(prefix + ol.StoreId)
+			buffer.WriteString(ol.StoreId)
 
 		}
 	}
+
+	outputStream.Println(buffer.String())
 }
 
 func parse(s []string) (il *InputLine) {
