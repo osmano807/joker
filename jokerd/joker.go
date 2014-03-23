@@ -96,6 +96,10 @@ func printOutput(il *InputLine, ol *OutputLine) {
 	}
 
 	if NewSquidFormat {
+		// OK	Success. A new storage ID is presented for this URL.
+		// ERR	Success. No change for this URL.
+		// BH	Failure. The helper encountered a problem.
+
 		switch ol.Result {
 		case NO_CHANGE:
 			outputStream.Println(prefix + "ERR") // Squid misleading return code
