@@ -100,7 +100,7 @@ func printOutput(il *InputLine, ol *OutputLine) {
 		case NO_CHANGE:
 			outputStream.Println(prefix + "ERR") // Squid misleading return code
 		case NEW_STOREID:
-			outputStream.Printf(prefix + "OK store-id=%v\n", ol.StoreId)
+			outputStream.Printf(prefix+"OK store-id=%v\n", ol.StoreId)
 		}
 	} else {
 		switch ol.Result {
