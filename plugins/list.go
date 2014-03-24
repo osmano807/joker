@@ -4,6 +4,7 @@
 
 package plugins
 
+// The order in which the joker will evaluate the plugins
 var PLUGINS_LIST []Plugin = []Plugin{
 	&Imgur{},
 	&Blogspot{},
