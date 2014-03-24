@@ -7,6 +7,9 @@ joker
 It uses a *plugin* model, in which you can support new websites easily
 without hassling too much with a long chain of `if else` code.
 
+It should run on any platform that Go supports, like Linux, FreeBSD,
+OpenBSD, Windows, to name a few.
+
 Install
 -------
 
