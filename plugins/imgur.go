@@ -25,6 +25,12 @@ func (p *Imgur) Handle(il *InputLine) (ol *OutputLine) {
 
 	ol.ChannelId = il.ChannelId
 
+	// There's also i.stack.imgur.com, but this host is a
+	// custom imgur installation to stackoverflow, and has
+	// some query string to resize the images, like:
+	// http://i.stack.imgur.com/YYo1x.jpg?s=128&g=1&g&s=32
+	// Squid should cache it as is.
+
 	if il.URL.Host != "i.imgur.com" {
 		ol.Result = NO_CHANGE
 		return
