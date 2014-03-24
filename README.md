@@ -40,6 +40,8 @@ ToDo
 Remarks
 -------
 
+The code is released under the BSD 2-Clause License.
+
 I'm coding to distract myself from problems, or, for *fun*. I don't
 have much time to support the code or to help, but feel free to mail
 me, I'll try to give an reply as soon as possible.
