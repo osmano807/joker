@@ -1,0 +1,11 @@
+{
+	"ArtifactsDest": "bld",
+	"Tasks": [
+		"interpolate-source",
+		"go-fmt",
+		"xc"
+	],
+	"BuildConstraints": "linux,openbsd,amd64",
+	"PackageVersion": "1.0.0",
+	"ConfigVersion": "0.9"
+}
