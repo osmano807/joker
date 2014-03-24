@@ -7,6 +7,23 @@ joker
 It uses a *plugin* model, in which you can support new websites easily
 without hassling too much with a long chain of `if else` code.
 
+Install
+-------
+
+If you've got Go installed, you can install joker with Go's command line
+interface:
+
+```
+go get github.com/osmano807/joker
+```
+
+You can test your installation by running `joker -version` from any folder.
+
+You can use [goxc](https://github.com/laher/goxc) to cross compile
+joker to another platform.
+
+Prebuilt packages are not offered for the moment.
+
 Setup
 -----
 
@@ -39,6 +56,14 @@ ToDo
 
 Remarks
 -------
+
+This program is inspired by the
+[inComum project](http://sf.net/p/incomum), a similar project.
+
+Also, inspired by the project to create a
+[packaged squid for Windows](https://under-linux.org/showthread.php?t=159347)
+and the works on the
+[store_id feature on Squid 3-HEAD](http://wiki.squid-cache.org/Features/StoreID).
 
 The code is released under the BSD 2-Clause License.
 
