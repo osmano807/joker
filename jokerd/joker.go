@@ -120,6 +120,8 @@ func printOutput(il *InputLine, ol *OutputLine) {
 		}
 	}
 
+	log.Println("Result:", buffer.String())
+
 	outputStream.Println(buffer.String())
 }
 
