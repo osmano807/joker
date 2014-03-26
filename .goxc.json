@@ -3,9 +3,15 @@
 	"Tasks": [
 		"interpolate-source",
 		"go-fmt",
-		"xc"
+		"xc",
+		"go-test"
 	],
 	"BuildConstraints": "linux,openbsd,amd64",
 	"PackageVersion": "1.0.0",
+	"TaskSettings": {
+		"go-test": {
+			"i": "false"
+		}
+	},
 	"ConfigVersion": "0.9"
 }
