@@ -55,7 +55,11 @@ func readerLoop(input io.Reader) {
 		}
 
 		log.Println("Fields are:", fields)
-		il := parse(fields)
+		il, err := parse(fields)
+		if err != nil {
+			log.Println("Erro inesperado", err)
+			continue
+		}
 		log.Println("Parsed:", il, il.URL.Host)
 		handleInput(il)
 	}
@@ -129,8 +133,9 @@ func printOutput(il *InputLine, ol *OutputLine) {
 	outputStream.Println(buffer.String())
 }
 
-func parse(s []string) (il *InputLine) {
+func parse(s []string) (il *InputLine, oerr error) {
 	il = &InputLine{}
+	oerr = nil
 	start := 1
 	if ChannelId, err := strconv.ParseUint(s[0], 10, 0); err != nil {
 		il.ChannelId = NON_CONCURRENT
@@ -141,6 +146,7 @@ func parse(s []string) (il *InputLine) {
 
 	if URL, err := url.Parse(s[start]); err != nil {
 		log.Println("Error!")
+		oerr = err
 		return
 	} else {
 		il.URL = URL
