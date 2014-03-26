@@ -54,7 +54,7 @@ ToDo
 
 * Profile the code and identify any spots for improvement.
 * Create a system to each plugin output his required squid acl.
-* Create tests on the code.
+* Create more tests on the code.
 
 Remarks
 -------
